@@ -1,16 +1,10 @@
 const express = require('express');
-const app = express();
 const fs = require('fs');
 const path = require('path');
 
-app.use(express.json());
-
+const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the  KIM Blog Platform!');
-});
+app.use(express.json());
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+const postsFilePath = path.join(__dirname, 'data', 'posts.json');
