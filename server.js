@@ -14,3 +14,14 @@ const readPosts = () => {
     const postsData = fs.readFileSync(postsFilePath);
     return JSON.parse(postsData);
 };
+
+// so here is a function to read posts from file
+const readPosts = () => {
+    const postsData = fs.readFileSync(postsFilePath);
+    return JSON.parse(postsData);
+};
+
+// Helper function to write posts to file
+const writePosts = (posts) => {
+    fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2));
+};
