@@ -42,3 +42,26 @@ app.get('/api/posts/:id', (req, res) => {
         res.status(404).json({ message: 'Post not found' });
     }
 });
+
+// Add a new post
+app.post('/api/posts', (req, res) => {
+    const posts = readPosts();
+    const newPost = {
+        id: posts.length ? posts[posts.length - 1].id + 1 : 1,
+        title: req.body.title,
+        content: req.body.content,
+        comments: []
+    };
+    posts.push(newPost);
+    writePosts(posts);
+    res.status(201).json(newPost);
+});
+
+
+// Deleting a post by ID
+app.delete('/api/posts/:id', (req, res) => {
+    let posts = readPosts();
+    posts = posts.filter(p => p.id !== parseInt(req.params.id));
+    writePosts(posts);
+    res.status(204).send();
+});
