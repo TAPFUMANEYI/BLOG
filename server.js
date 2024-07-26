@@ -25,3 +25,20 @@ const readPosts = () => {
 const writePosts = (posts) => {
     fs.writeFileSync(postsFilePath, JSON.stringify(posts, null, 2));
 };
+
+// Get all posts
+app.get('/api/posts', (req, res) => {
+    const posts = readPosts();
+    res.json(posts);
+});
+
+// Get a single post by ID
+app.get('/api/posts/:id', (req, res) => {
+    const posts = readPosts();
+    const post = posts.find(p => p.id === parseInt(req.params.id));
+    if (post) {
+        res.json(post);
+    } else {
+        res.status(404).json({ message: 'Post not found' });
+    }
+});
