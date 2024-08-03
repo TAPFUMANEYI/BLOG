@@ -15,11 +15,7 @@ const readPosts = () => {
     return JSON.parse(postsData);
 };
 
-// so here is a function to read posts from file
-const readPosts = () => {
-    const postsData = fs.readFileSync(postsFilePath);
-    return JSON.parse(postsData);
-};
+
 
 // Helper function to write posts to file
 const writePosts = (posts) => {
@@ -64,4 +60,25 @@ app.delete('/api/posts/:id', (req, res) => {
     posts = posts.filter(p => p.id !== parseInt(req.params.id));
     writePosts(posts);
     res.status(204).send();
+});
+
+// Add a comment to a post
+app.post('/api/posts/:id/comments', (req, res) => {
+    const posts = readPosts();
+    const post = posts.find(p => p.id === parseInt(req.params.id));
+    if (post) {
+        const newComment = {
+            id: post.comments.length ? post.comments[post.comments.length - 1].id + 1 : 1,
+            text: req.body.text
+        };
+        post.comments.push(newComment);
+        writePosts(posts);
+        res.status(201).json(newComment);
+    } else {
+        res.status(404).json({ message: 'Post not found' });
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
